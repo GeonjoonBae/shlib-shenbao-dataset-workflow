@@ -13,6 +13,8 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
+csv.field_size_limit(1_000_000)
+
 
 START_URL = "https://z.library.sh.cn/http/80/77/30/1/10/yitlink/"
 BASE_DIR = Path(__file__).resolve().parent
@@ -30,9 +32,8 @@ DESCENDANT_TITLE_SELECTOR = "h3 > a"
 BLOCK_PUBLISH_SELECTOR = ":scope > div:nth-child(4)"
 DETAIL_TEXT_XPATH = '//*[@id="content-box_contentwrapper"]/div[2]/div'
 DETAIL_TEXT_SELECTORS = [
+    ("css", "#content-box_contentwrapper .content-box2"),
     ("xpath", DETAIL_TEXT_XPATH),
-    ("css", "#content-box_contentwrapper > div:nth-child(4) > div"),
-    ("css", "#content-box_contentwrapper > h1"),
 ]
 BACK_TO_LIST_XPATH = '//*[@id="catalog2"]/ul/li[1]/a'
 PAGE_SIZE_SELECT = f"{LIST_ROOT} > div:nth-child(1) > select"
@@ -432,13 +433,32 @@ def read_list_entry(block: Locator) -> dict[str, str]:
         publish = normalize_text(publish_locator.first.inner_text())
     else:
         publish = normalize_text(block.locator("div").last.inner_text())
-    return {"title": title, "publish": publish}
+    return {"list_title": title, "publish": publish}
+
+
+def extract_detail_title(scope: Page | Frame) -> str:
+    started_at = time.time()
+    while (time.time() - started_at) < (MAX_RESULT_WAIT_MS / 1000):
+        try:
+            title_locator = scope.locator("css=#content-box_contentwrapper > h1").first
+            if title_locator.count():
+                title_locator.wait_for(timeout=250)
+                title = normalize_text(title_locator.inner_text())
+                if title:
+                    return title
+        except PlaywrightTimeoutError:
+            pass
+        except PlaywrightError:
+            pass
+        time.sleep(0.2)
+    return ""
 
 
 def extract_detail_text(scope: Page | Frame, timeout_ms: int) -> str:
     max_timeout_ms = max(timeout_ms, MAX_RESULT_WAIT_MS)
     started_at = time.time()
     while (time.time() - started_at) < (max_timeout_ms / 1000):
+        detail_title = extract_detail_title(scope)
         for selector_type, selector in DETAIL_TEXT_SELECTORS:
             locator = scope.locator(f"{selector_type}={selector}")
             try:
@@ -447,6 +467,8 @@ def extract_detail_text(scope: Page | Frame, timeout_ms: int) -> str:
                 first = locator.first
                 first.wait_for(timeout=250)
                 text = normalize_text(first.inner_text())
+                if detail_title and text == detail_title:
+                    continue
                 if text:
                     return text
             except PlaywrightTimeoutError:
@@ -532,8 +554,8 @@ def wait_for_detail_scope(context, wait_seconds: float, extended_wait_seconds: f
 def build_output_path(output_dir: Path, rows: list[dict[str, str]], label: Optional[str]) -> Optional[Path]:
     if not rows:
         return None
-    start_index = extract_title_index(rows[0]["title"], rows[0]["global_item_index"])
-    end_index = extract_title_index(rows[-1]["title"], rows[-1]["global_item_index"])
+    start_index = rows[0]["item_index"]
+    end_index = rows[-1]["item_index"]
     if label:
         return output_dir / f"shenbao_rawdata_{label}_{start_index}to{end_index}.csv"
     return output_dir / f"shenbao_rawdata_{start_index}to{end_index}.csv"
@@ -603,11 +625,13 @@ def load_resume_rows(path: Path) -> list[dict[str, str]]:
                 global_item_index = (page - 1) * 100 + item_index
             rows.append(
                 {
+                    "label": row["label"],
                     "page": str(page),
                     "item_index": str(item_index),
-                    "title": row["title"],
+                    "list_title": row["list_title"],
                     "publish": row["publish"],
                     "detail_url": row["detail_url"],
+                    "title": row["title"],
                     "text": row["text"],
                     "global_item_index": str(global_item_index),
                 }
@@ -641,7 +665,7 @@ def write_rows(
     if previous_path and previous_path != path and previous_path.exists():
         previous_path.unlink()
 
-    fieldnames = ["page", "item_index", "title", "publish", "detail_url", "text"]
+    fieldnames = ["label", "page", "item_index", "list_title", "publish", "detail_url", "title", "text"]
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -761,11 +785,12 @@ def main() -> None:
 
                 block = result_blocks[item_idx]
                 global_item_index = (current_page_no - 1) * 100 + (item_idx + 1)
-                list_info = {"title": f"[UNRESOLVED TITLE] {global_item_index}", "publish": ""}
+                list_info = {"list_title": f"[UNRESOLVED TITLE] {global_item_index}", "publish": ""}
                 title_item_index = str(global_item_index)
                 title_locator: Optional[Locator] = None
                 detail_active: Optional[ActiveScope] = None
                 detail_url = ""
+                detail_title = ""
                 detail_text = ""
                 failure_message = ""
 
@@ -774,10 +799,11 @@ def main() -> None:
                     title_locator = get_block_title_locator(block)
                     if title_locator is None:
                         raise RuntimeError("Title locator could not be resolved for click.")
-                    title_item_index = extract_title_index(list_info["title"], str(global_item_index))
+                    title_item_index = extract_title_index(list_info["list_title"], str(global_item_index))
                     title_locator.click()
                     detail_active = wait_for_detail_scope(context, args.wait_seconds, args.extended_wait_seconds)
                     detail_url = get_scope_url(detail_active.scope) or get_scope_url(detail_active.page)
+                    detail_title = extract_detail_title(detail_active.scope)
                     detail_text = extract_detail_text(
                         detail_active.scope, timeout_ms=int(args.detail_timeout_seconds * 1000)
                     )
@@ -792,22 +818,24 @@ def main() -> None:
 
                 rows.append(
                     {
+                        "label": run_label or "",
                         "page": str(actual_page_no),
                         "item_index": title_item_index,
-                        "title": list_info["title"],
+                        "list_title": list_info["list_title"],
                         "publish": list_info["publish"],
                         "detail_url": detail_url,
+                        "title": detail_title,
                         "text": detail_text,
                         "global_item_index": title_item_index,
                     }
                 )
                 if failure_message:
                     print(
-                        f"Failed page={actual_page_no} item={title_item_index} title={list_info['title'][:40]} reason={failure_message}"
+                        f"Failed page={actual_page_no} item={title_item_index} title={list_info['list_title'][:40]} reason={failure_message}"
                     )
                 else:
                     print(
-                        f"Collected page={actual_page_no} item={title_item_index} title={list_info['title'][:40]}"
+                        f"Collected page={actual_page_no} item={title_item_index} title={list_info['list_title'][:40]}"
                     )
 
                 if detail_active is not None:
