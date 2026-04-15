@@ -4,6 +4,8 @@ import csv
 import re
 from pathlib import Path
 
+csv.field_size_limit(1_000_000)
+
 
 BASE_DIR = Path(__file__).resolve().parent
 TEXTDATA_DIR = BASE_DIR / "shenbao" / "shenbao_textdata"
