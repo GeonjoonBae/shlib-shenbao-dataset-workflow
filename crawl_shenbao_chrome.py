@@ -18,7 +18,7 @@ csv.field_size_limit(1_000_000)
 
 START_URL = "https://z.library.sh.cn/http/80/77/30/1/10/yitlink/"
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_OUTPUT_DIR = BASE_DIR / "shenbao" / "shenbao_rawdata"
+DEFAULT_OUTPUT_DIR = BASE_DIR / "shenbao" / "shenbao_textdata"
 CHROME_CANDIDATES = [
     Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
     Path(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
@@ -69,7 +69,7 @@ def parse_args() -> argparse.Namespace:
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
-        help="Output directory for shenbao_rawdata_*.csv files. Defaults to ./shenbao/shenbao_rawdata beside this script.",
+        help="Output directory for shenbao_textdata_*.csv files. Defaults to ./shenbao/shenbao_textdata beside this script.",
     )
     parser.add_argument(
         "--label",
@@ -105,12 +105,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--resume-file",
         type=Path,
-        help="Resume from a previously saved shenbao_rawdata_*.csv file.",
+        help="Resume from a previously saved shenbao_textdata_*.csv file.",
     )
     parser.add_argument(
         "--resume-latest",
         action="store_true",
-        help="Resume from the latest shenbao_rawdata_*.csv found in the output directory.",
+        help="Resume from the latest shenbao_textdata_*.csv found in the output directory.",
     )
     return parser.parse_args()
 
@@ -557,8 +557,8 @@ def build_output_path(output_dir: Path, rows: list[dict[str, str]], label: Optio
     start_index = rows[0]["item_index"]
     end_index = rows[-1]["item_index"]
     if label:
-        return output_dir / f"shenbao_rawdata_{label}_{start_index}to{end_index}.csv"
-    return output_dir / f"shenbao_rawdata_{start_index}to{end_index}.csv"
+        return output_dir / f"shenbao_textdata_{label}_{start_index}to{end_index}.csv"
+    return output_dir / f"shenbao_textdata_{start_index}to{end_index}.csv"
 
 
 def get_next_page_locator(scope: Page | Frame, target_page: int) -> Locator:
@@ -583,7 +583,7 @@ def click_next_page(context, active: ActiveScope, target_page: int, timeout_ms: 
 
 
 def find_latest_resume_file(output_dir: Path, label: Optional[str] = None) -> Optional[Path]:
-    pattern = f"shenbao_rawdata_{label}_*to*.csv" if label else "shenbao_rawdata_*to*.csv"
+    pattern = f"shenbao_textdata_{label}_*to*.csv" if label else "shenbao_textdata_*to*.csv"
     candidates = list(output_dir.glob(pattern))
     if not candidates:
         return None
@@ -600,7 +600,7 @@ def find_latest_resume_file(output_dir: Path, label: Optional[str] = None) -> Op
 
 
 def infer_label_from_path(path: Path) -> Optional[str]:
-    match = re.match(r"^shenbao_rawdata_(.+)_(\d+)to(\d+)$", path.stem)
+    match = re.match(r"^shenbao_textdata_(.+)_(\d+)to(\d+)$", path.stem)
     if not match:
         return None
     return match.group(1)

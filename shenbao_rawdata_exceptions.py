@@ -6,11 +6,11 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent
-RAWDATA_DIR = BASE_DIR / "shenbao" / "shenbao_rawdata"
-OUTPUT_DIR = RAWDATA_DIR / "exceptions"
+TEXTDATA_DIR = BASE_DIR / "shenbao" / "shenbao_textdata"
+OUTPUT_DIR = TEXTDATA_DIR / "exceptions"
 
 INPUT_PATTERN = re.compile(
-    r"^shenbao_rawdata_(xianfa|lixian|xianzheng|zhixian)_(\d+)to(\d+)\.csv$"
+    r"^shenbao_textdata_(xianfa|lixian|xianzheng|zhixian)_(\d+)to(\d+)\.csv$"
 )
 META_MARKER = "其他紀元："
 
@@ -57,7 +57,7 @@ def classify_text(text: str) -> str:
 
 
 def process_file(path: Path, keyword: str) -> Path:
-    output_path = OUTPUT_DIR / f"shenbao_rawdata_{keyword}_exception_rows.csv"
+    output_path = OUTPUT_DIR / f"shenbao_textdata_{keyword}_exception_rows.csv"
     extracted_rows: list[dict[str, str]] = []
 
     with path.open("r", encoding="utf-8", newline="") as infile:
@@ -101,7 +101,7 @@ def process_file(path: Path, keyword: str) -> Path:
 
 def main() -> None:
     matched_files = []
-    for path in RAWDATA_DIR.iterdir():
+    for path in TEXTDATA_DIR.iterdir():
         if not path.is_file() or path.suffix.lower() != ".csv":
             continue
         match = INPUT_PATTERN.match(path.name)
@@ -110,7 +110,7 @@ def main() -> None:
 
     matched_files.sort(key=lambda item: item[0].name)
     if not matched_files:
-        raise FileNotFoundError(f"No target CSV files found in {RAWDATA_DIR}")
+        raise FileNotFoundError(f"No target CSV files found in {TEXTDATA_DIR}")
 
     failed_outputs: list[tuple[str, str]] = []
     for path, keyword in matched_files:
