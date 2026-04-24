@@ -1,7 +1,7 @@
 # 상하이도서관 《申報》 텍스트 데이터와 그 수집-전처리 절차
 ### Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing
 
-## 데이터 인용 예시
+<details> <summary><h3>데이터 인용 예시</h3></summary>
 - Bae, Geonjoon. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow
 
 - Bae, G., 2026. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. Available at: https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow [Accessed XX April 20XX(방문 일자)].
