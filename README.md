@@ -1,5 +1,5 @@
 # 상하이도서관 《申報》 텍스트 데이터와 그 수집-전처리 절차
-### Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing
+## Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing
 
 <details> <summary><h3>데이터 인용 예시</h3></summary>
 - Bae, Geonjoon. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow
@@ -10,8 +10,9 @@
 
 - 배건준, 「상하이도서관 《申報》 텍스트 데이터와 그 수집-전처리 절차」, GitHub 저장소, https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow (검색일 기입)
 
+</details>
+
 ## README 목차
-- [논문 제목](#원고-제목)
 - [저장소 개요](#저장소-개요)
 - [실행 환경](#실행-환경)
 - [저장소 구성](#저장소-구성)
@@ -23,12 +24,7 @@
 - [산출물 구조](#산출물-구조)
 - [유의사항](#유의사항)
 
-## 논문 제목
-### 중국 상하이도서관 《申報》 텍스트 데이터와 그 수집 및 전처리 절차
-
-이 저장소는 상하이도서관 `《申報》` 데이터베이스에서 텍스트 데이터를 수집하는 반자동 크롤링 스크립트와, 여러 수집 결과를 연구용 통합 데이터로 정리하는 전처리 스크립트를 함께 제공한다.
-
-## 목표 데이터베이스 개요
+## 저장소 개요
 `《申報》`는 1872년부터 1949년까지 발행된 중국 근현대사의 대표적 일간지이며, 정치사·사회사·문화사·경제사 연구 전반에서 중요한 사료로 활용된다. 이 저장소는 상하이도서관 `《申報》` 데이터베이스에서 특정 검색어 또는 특정 기간에 해당하는 기사 텍스트를 수집하고, 이를 하나의 연구용 기사 단위 데이터셋으로 전처리하는 전체 절차를 재현할 수 있도록 설계되었다.
 
 이 워크플로우는 다음 두 단계로 이루어진다.
@@ -38,7 +34,7 @@
 2. `shenbao_textdata_preprocess_combine.py`
    - 여러 수집 기준별 원본 CSV를 병합하고, `detail_url`의 기사 식별자(`article_id`)를 기준으로 중복 행을 통합한 뒤, 발행 정보와 후행 메타데이터를 분리하고 제목/본문 문자열을 정제한다.
 
-본 작업의 코드 작성과 수정 과정에는 OpenAI Codex 기반 GPT-5.4 코딩 에이전트를 활용했으며, 사용자가 요구사항·오류 메시지·HTML 구조 예시를 제시하고 이에 따라 코드를 반복 수정하는 Human-in-the-Loop 방식으로 진행되었다.
+본 작업의 코드 작성과 수정 과정에는 OpenAI Codex 기반 GPT-5.4 코딩 에이전트를 활용했으며, 사용자가 요구사항·오류 메시지·HTML 구조 예시를 제시하고 이에 따라 코드를 반복 수정하는 Human-in-the-Loop 방식으로 진행되었다. 저장소는 AI Coding Agent 대화 기록, 스크립트, 수집 및 전처리 데이터 샘플을 제공한다.
 
 ## 실행 환경
 - 운영체제: Windows 로컬 환경
@@ -48,7 +44,7 @@
 - 브라우저 자동화: Playwright for Python 1.58.0
 - 브라우저: Google Chrome
 
-## 저장소 구성
+## 저장소 구성 
 ```text
 shlib-shenbao-dataset-workflow/
 ├─ README.md
@@ -89,7 +85,7 @@ shenbao_textdata_{label}_{start_index}to{end_index}.csv
 ```
 
 ### 2. `shenbao_textdata_exceptions.py`
-원본 수집 CSV에서 예외 행을 식별해 별도 CSV로 정리하는 보조 스크립트다. `publish`, `detail_url`, `text` 세 열을 기준으로 예외 여부와 사유를 판정한다. 이 스크립트는 `2_preprocess_1_예외 데이터 식별.md`의 대화 내용을 바탕으로 작성되었다. 해당 코드로 작성된 예외 데이터는 3. `shenbao_textdata_preprocess_combine.py`의 전처리 규칙을 구체화하는 참고 자료로 활용되었다. 실제 전처리 단계에서는 사용하지 않는다. 
+원본 수집 CSV에서 예외 행을 식별해 별도 CSV로 정리하는 보조 스크립트다. `publish`, `detail_url`, `text` 세 열을 기준으로 예외 여부와 사유를 판정한다. 이 스크립트는 `2_preprocess_1_예외 데이터 식별.md`의 대화 내용을 바탕으로 작성되었다. 해당 코드로 작성된 예외 데이터는 3. `shenbao_textdata_preprocess_combine.py`의 전처리 규칙을 구체화하는 참고 자료로 활용되었다. 실제 워크플로우에서는 사용하지 않는다.
 
 주요 기능:
 - 네 원본 CSV 자동 탐색
