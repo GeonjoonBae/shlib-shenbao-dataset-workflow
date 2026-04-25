@@ -672,9 +672,9 @@ def main() -> None:
     stage2_rows = make_stage2_rows(stage1_rows, dataset_label)
     stage3_rows = make_stage3_rows(stage2_rows)
 
-    stage1_path = output_dir / f"shenbao_{dataset_label}_text_stage1_appended_rows.csv"
-    stage2_path = output_dir / f"shenbao_{dataset_label}_text_stage2_deduplicated_articles.csv"
-    stage3_path = output_dir / f"shenbao_{dataset_label}_text_stage3_preprocessed_articles.csv"
+    stage1_path = output_dir / f"shenbao_textdata_stage1_appended_rows_{dataset_label}.csv"
+    stage2_path = output_dir / f"shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv"
+    stage3_path = output_dir / f"shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv"
 
     write_csv(stage1_path, stage1_rows, STAGE1_COLUMNS)
     write_csv(stage2_path, stage2_rows, STAGE2_COLUMNS)
