@@ -62,9 +62,9 @@ shlib-shenbao-dataset-workflow/
    ├─ (sample)shenbao_textdata_xianzheng_1to9906.csv
    ├─ (sample)shenbao_textdata_zhixian_1to4322.csv
    └─ preprocess/
-      ├─ (sample)shenbao_constitution_text_stage1_appended_rows.csv
-      ├─ (sample)shenbao_constitution_text_stage2_deduplicated_articles.csv
-      └─ (sample)shenbao_constitution_text_stage3_preprocessed_articles.csv
+      ├─ (sample)shenbao_textdata_stage1_appended_rows_constitution.csv
+      ├─ (sample)shenbao_textdata_stage2_deduplicated_articles_constitution.csv
+      └─ (sample)shenbao_textdata_stage3_preprocessed_articles_constitution.csv
 ```
 
 ## 코드 소개
@@ -96,7 +96,7 @@ shenbao_textdata_{label}_{start_index}to{end_index}.csv
 
 출력 파일 형식:
 ```text
-shenbao_textdata_{keyword}_exception_rows.csv
+shenbao_textdata_{label}_exception_rows.csv
 ```
 
 ### 3. `shenbao_textdata_preprocess_combine.py`
@@ -113,9 +113,9 @@ shenbao_textdata_{keyword}_exception_rows.csv
 
 출력 파일 형식:
 ```text
-shenbao_{dataset_label}_text_stage1_appended_rows.csv
-shenbao_{dataset_label}_text_stage2_deduplicated_articles.csv
-shenbao_{dataset_label}_text_stage3_preprocessed_articles.csv
+shenbao_textdata_stage1_appended_rows_{dataset_label}.csv
+shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv
+shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv
 ```
 
 ## 자료 소개
@@ -186,7 +186,7 @@ label, page, item_index, list_title, publish, detail_url, title, text
 
 생성 파일:
 ```text
-shenbao_{dataset_label}_text_stage1_appended_rows.csv
+shenbao_textdata_stage1_appended_rows_{dataset_label}.csv
 ```
 
 ### 2단계. 중복 기사 통합
@@ -203,7 +203,7 @@ shenbao_{dataset_label}_text_stage1_appended_rows.csv
 
 생성 파일:
 ```text
-shenbao_{dataset_label}_text_stage2_deduplicated_articles.csv
+shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv
 ```
 
 ### 3단계. 메타데이터 분리와 문자열 정제
@@ -229,7 +229,7 @@ shenbao_{dataset_label}_text_stage2_deduplicated_articles.csv
 
 생성 파일:
 ```text
-shenbao_{dataset_label}_text_stage3_preprocessed_articles.csv
+shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv
 ```
 
 ## 사용 방법
