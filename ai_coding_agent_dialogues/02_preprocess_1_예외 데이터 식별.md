@@ -40,10 +40,10 @@ shenbao\shenbao_textdata(하위 폴더 제외) 내에 존재하는 네 건의 `s
 - `detail_url` 빈 값 1건
 
 대상 파일:
-- [shenbao_textdata_xianfa_1to18648.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_1to18648.csv)
-- [shenbao_textdata_lixian_1to7203.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_lixian_1to7203.csv)
-- [shenbao_textdata_xianzheng_1to9906.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianzheng_1to9906.csv)
-- [shenbao_textdata_zhixian_1to4322.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_zhixian_1to4322.csv)
+- shenbao_textdata_xianfa_1to18648.csv
+- shenbao_textdata_lixian_1to7203.csv
+- shenbao_textdata_xianzheng_1to9906.csv
+- shenbao_textdata_zhixian_1to4322.csv
 
 **shenbao_textdata_xianfa_1to18648.csv**
 - 오류 행 `4건`: `4367, 4749, 5469, 16192`
@@ -115,10 +115,10 @@ shenbao\shenbao_textdata(하위 폴더 제외) 내에 존재하는 네 건의 `s
 - `detail_url`이 빈 행
 
 생성 파일:
-- [shenbao_textdata_xianfa_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_exception_rows.csv)
-- [shenbao_textdata_lixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_lixian_exception_rows.csv)
-- [shenbao_textdata_xianzheng_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianzheng_exception_rows.csv)
-- [shenbao_textdata_zhixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_zhixian_exception_rows.csv)
+- shenbao_textdata_xianfa_exception_rows.csv
+- shenbao_textdata_lixian_exception_rows.csv
+- shenbao_textdata_xianzheng_exception_rows.csv
+- shenbao_textdata_zhixian_exception_rows.csv
 
 행 수:
 - `xianfa`: `1493`
@@ -163,10 +163,10 @@ shenbao\shenbao_textdata 내(하위 폴더 제외)에 존재하는 네 건의 cr
 예: `129-130`은 `129, 130`을 뜻합니다.
 
 대상 파일:
-- [crawl_shenbao_xianfa_1to18648.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\crawl_shenbao_xianfa_1to18648.csv)
-- [crawl_shenbao_lixian_1to7203.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\crawl_shenbao_lixian_1to7203.csv)
-- [crawl_shenbao_xianzheng_1to9906.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\crawl_shenbao_xianzheng_1to9906.csv)
-- [crawl_shenbao_zhixian_1to4322.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\crawl_shenbao_zhixian_1to4322.csv)
+- crawl_shenbao_xianfa_1to18648.csv
+- crawl_shenbao_lixian_1to7203.csv
+- crawl_shenbao_xianzheng_1to9906.csv
+- crawl_shenbao_zhixian_1to4322.csv
 
 **crawl_shenbao_lixian_1to7203.csv**
 - `其他紀元：` 메타 전용 행 `659건`
@@ -259,13 +259,13 @@ shenbao\shenbao_textdata 내(하위 폴더 제외)에 존재하는 네 건의 cr
 완료했습니다.
 
 생성 스크립트:
-- [shenbao_textdata_exceptions.py](C:\Users\class\Documents\coding\shenbao_textdata_exceptions.py)
+- shenbao_textdata_exceptions.py
 
 생성 결과:
-- [shenbao_textdata_xianfa_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_xianfa_exception_rows.csv)
-- [shenbao_textdata_lixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_lixian_exception_rows.csv)
-- [shenbao_textdata_xianzheng_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_xianzheng_exception_rows.csv)
-- [shenbao_textdata_zhixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_zhixian_exception_rows.csv)
+- shenbao_textdata_xianfa_exception_rows.csv
+- shenbao_textdata_lixian_exception_rows.csv
+- shenbao_textdata_xianzheng_exception_rows.csv
+- shenbao_textdata_zhixian_exception_rows.csv
 
 반영 기준:
 - `publish_exception_reason`
@@ -304,12 +304,12 @@ shenbao\shenbao_textdata\exceptions 내 csv 파일들에서 확인할 수 있는
 
 ## 답변 2-1
 정리 기준:
-- 대상 폴더: [exceptions](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions)
+- 대상 폴더: exceptions
 - 대상 파일:
-  - [shenbao_textdata_lixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_lixian_exception_rows.csv)
-  - [shenbao_textdata_xianfa_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_xianfa_exception_rows.csv)
-  - [shenbao_textdata_xianzheng_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_xianzheng_exception_rows.csv)
-  - [shenbao_textdata_zhixian_exception_rows.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\exceptions\shenbao_textdata_zhixian_exception_rows.csv)
+  - shenbao_textdata_lixian_exception_rows.csv
+  - shenbao_textdata_xianfa_exception_rows.csv
+  - shenbao_textdata_xianzheng_exception_rows.csv
+  - shenbao_textdata_zhixian_exception_rows.csv
 
 **전체 개요**
 - 예외 행 총수: `6,818`

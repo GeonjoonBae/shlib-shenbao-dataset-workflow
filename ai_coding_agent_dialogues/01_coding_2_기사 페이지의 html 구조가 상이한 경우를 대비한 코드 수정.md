@@ -18,10 +18,10 @@ shenbao_textdata 폴더 내(하위 폴더 제외) 네 파일에 대해 title 열
 - 즉 띄어쓰기, 줄바꿈 차이는 무시
 
 결과:
-- [shenbao_textdata_xianfa_1to18648.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_1to18648.csv): `891건`
-- [shenbao_textdata_lixian_1to7203.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_lixian_1to7203.csv): `406건`
-- [shenbao_textdata_xianzheng_1to9906.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianzheng_1to9906.csv): `557건`
-- [shenbao_textdata_zhixian_1to4322.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_zhixian_1to4322.csv): `175건`
+- shenbao_textdata_xianfa_1to18648.csv: `891건`
+- shenbao_textdata_lixian_1to7203.csv: `406건`
+- shenbao_textdata_xianzheng_1to9906.csv: `557건`
+- shenbao_textdata_zhixian_1to4322.csv: `175건`
 
 추가 확인:
 - 위 일치 행들 중 `text`에 `其他紀元：`가 포함된 경우는 **4개 파일 모두 0건**이었습니다.
@@ -78,9 +78,9 @@ shenbao_textdata 폴더 내(하위 폴더 제외) 네 파일에 대해 title 열
 원인은 현재 본문 추출 selector의 fallback 설계입니다.
 
 **문제 지점**
-- [crawl_shenbao_chrome.py:31](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:31)
-- [crawl_shenbao_chrome.py:32](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:32)
-- [crawl_shenbao_chrome.py:437](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:437)
+- crawl_shenbao_chrome.py:31
+- crawl_shenbao_chrome.py:32
+- crawl_shenbao_chrome.py:437
 
 현재 코드:
 - `DETAIL_TEXT_XPATH = //*[@id="content-box_contentwrapper"]/div[2]/div`
@@ -164,7 +164,7 @@ DETAIL_TEXT_SELECTORS = [
 - **제목 fallback 제거**
 - **메타 잘라내기**
 
-원하면 이 기준으로 [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)를 바로 수정하겠습니다.
+원하면 이 기준으로 crawl_shenbao_chrome.py를 바로 수정하겠습니다.
 
 ---
 
@@ -248,9 +248,9 @@ HTML:
 이건 “일반 구조 변경”이 아니라, **실제 본문 컨테이너를 더 직접적으로 잡는 쪽으로 정밀화**하는 것입니다.
 
 **지금 코드의 위험**
-현재 [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)에서:
-- [line 32](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:32)
-- [line 35](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:35)
+현재 crawl_shenbao_chrome.py에서:
+- line 32
+- line 35
 
 ```python
 DETAIL_TEXT_SELECTORS = [
@@ -304,7 +304,7 @@ DETAIL_TEXT_SELECTORS = [
   3. `h1` fallback 제거
   4. 제목과 동일한 텍스트는 본문으로 채택하지 않는 방어 로직 추가
 
-원하면 이 기준으로 [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)를 바로 수정하겠습니다.
+원하면 이 기준으로 crawl_shenbao_chrome.py를 바로 수정하겠습니다.
 
 ---
 
@@ -348,7 +348,7 @@ DETAIL_TEXT_SELECTORS = [
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 반영 내용:
 - 본문 추출 selector 우선순위 변경
@@ -386,7 +386,7 @@ zhixian,1,1,1. 波恩憲法分裂德國 德共產黨代表拒絕簽字,申報 �
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 반영 내용:
 1. `item_index` 추출 로직 유지
@@ -485,7 +485,7 @@ zhixian,1,1,1. 波恩憲法分裂德國 德共產黨代表拒絕簽字,申報 �
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 변경 내용:
 - `load_resume_rows()`에서 구버전 CSV 호환 fallback 제거
@@ -590,8 +590,8 @@ label,page,item_index,list_title,publish,detail_url,title,text
 핵심은 `page`와 `item_index`입니다.
 
 대상 파일:
-- 기존 버전: [shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py)
-- 현재 버전: [coding\crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- 기존 버전: shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py
+- 현재 버전: coding\crawl_shenbao_chrome.py
 
 **1. 기존 버전에서 재개 기준**
 기존 버전은 재개 파일을 읽을 때 아래 필드를 사용했습니다.
@@ -600,8 +600,8 @@ label,page,item_index,list_title,publish,detail_url,title,text
 - 보조 저장용: `title`, `publish`, `detail_url`, `text`
 
 관련 위치:
-- 재개 파일 읽기: [기존 load_resume_rows](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py:593)
-- 재개 지점 계산: [기존 get_resume_target](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py:618)
+- 재개 파일 읽기: 기존 load_resume_rows
+- 재개 지점 계산: 기존 get_resume_target
 
 동작:
 - 마지막 행의 `page` 읽음
@@ -619,8 +619,8 @@ label,page,item_index,list_title,publish,detail_url,title,text
 현재 버전도 재개 지점 계산 자체는 동일합니다.
 
 관련 위치:
-- 재개 파일 읽기: [현재 load_resume_rows](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:605)
-- 재개 지점 계산: [현재 get_resume_target](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:649)
+- 재개 파일 읽기: 현재 load_resume_rows
+- 재개 지점 계산: 현재 get_resume_target
 
 현재도:
 - 마지막 행의 `page`
@@ -650,8 +650,8 @@ label,page,item_index,list_title,publish,detail_url,title,text
 
 **4. 보조적으로 파일 선택에 쓰는 필드**
 재개가 시작되기 전에 “어느 파일을 재개할지”를 고를 때는 `label`이 영향을 줍니다.
-- 현재: [find_latest_resume_file](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:571)
-- 기존: [find_latest_resume_file](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\crawl_shenbao_chrome.py:563)
+- 현재: find_latest_resume_file
+- 기존: find_latest_resume_file
 
 즉 정리하면:
 - **재개 파일 선택**: `label`이 관여할 수 있음
@@ -675,7 +675,7 @@ label,page,item_index,list_title,publish,detail_url,title,text
 제거했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 변경 내용:
 - `load_resume_rows()` 안의 명시적 “현재 스키마만 허용” 검사 블록 삭제
@@ -700,14 +700,14 @@ label,page,item_index,list_title,publish,detail_url,title,text
 `h1` selector가 틀렸다기보다, **너무 이른 시점에 한 번만 읽고 끝내고 있기 때문**입니다.
 
 확인한 사실:
-- 최신 출력 파일 [shenbao_textdata_xianfa_1to80.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_1to80.csv) 에서
+- 최신 출력 파일 shenbao_textdata_xianfa_1to80.csv 에서
   - `list_title`은 정상
   - `title`은 초반 행들이 전부 빈 문자열
 - 즉 `detail_title`이 실제로 저장되지 않고 있습니다.
 
 **문제 지점**
 1. 상세 `title` 읽기 함수
-- [crawl_shenbao_chrome.py:437](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:437)
+- crawl_shenbao_chrome.py:437
 
 ```python
 def extract_detail_title(scope: Page | Frame) -> str:
@@ -721,7 +721,7 @@ def extract_detail_title(scope: Page | Frame) -> str:
 ```
 
 2. 이 함수가 호출되는 시점
-- [crawl_shenbao_chrome.py:796](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:796)
+- crawl_shenbao_chrome.py:796
 
 ```python
 detail_title = extract_detail_title(detail_active.scope)
@@ -733,7 +733,7 @@ detail_text = extract_detail_text(...)
 - `h1`를 **딱 한 번만** 읽습니다.
 
 반면 `text`는 다릅니다.
-- [crawl_shenbao_chrome.py:446](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:446)
+- crawl_shenbao_chrome.py:446
 
 `extract_detail_text()`는 최대 60초까지 반복 대기하면서 본문을 찾습니다.  
 그래서:
@@ -787,7 +787,7 @@ detail_text = extract_detail_text(...)
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 변경 내용:
 - `extract_detail_title()`를 단발성 조회에서 **조건부 장기 대기 방식**으로 변경
@@ -829,7 +829,7 @@ _csv.Error: field larger than field limit (131072)
 문제는 CSV 구조가 아니라 **파이썬 `csv` 모듈의 기본 필드 길이 제한**입니다.
 
 에러 의미:
-- 재개 파일 [shenbao_textdata_xianfa_1to1884.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_1to1884.csv) 를 읽는 중
+- 재개 파일 shenbao_textdata_xianfa_1to1884.csv 를 읽는 중
 - 어떤 행의 한 컬럼 값, 거의 확실히 `text`, 가
 - 기본 허용 크기 `131072` 문자를 넘었습니다
 
@@ -839,7 +839,7 @@ _csv.Error: field larger than field limit (131072)
 - `csv.DictReader`가 읽다가 멈춘 겁니다
 
 현재 실패 지점:
-- [crawl_shenbao_chrome.py:617](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:617)
+- crawl_shenbao_chrome.py:617
 - `for row in reader:`
 
 **원인**
@@ -866,7 +866,7 @@ csv.field_size_limit(sys.maxsize)
 - 해결은 `csv.field_size_limit` 상향
 - 이건 재개 읽기뿐 아니라 앞으로 긴 기사 처리에도 필요한 수정입니다
 
-원하면 바로 [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)에 반영하겠습니다.
+원하면 바로 crawl_shenbao_chrome.py에 반영하겠습니다.
 
 ---
 
@@ -877,7 +877,7 @@ csv.field_size_limit(sys.maxsize)
 문제 행은 하나입니다.
 
 대상 파일:
-- [shenbao_textdata_xianfa_1to1884.csv](C:\Users\class\Documents\coding\shenbao\shenbao_textdata\shenbao_textdata_xianfa_1to1884.csv)
+- shenbao_textdata_xianfa_1to1884.csv
 
 확인 결과:
 - 초과 필드 수: `1건`
@@ -895,7 +895,7 @@ csv.field_size_limit(sys.maxsize)
 - 최대 필드 = `item_index=726`, `text`, `322522`
 
 다음 단계로 필요한 건 명확합니다.
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)에 `csv.field_size_limit(...)`를 추가해야 합니다
+- crawl_shenbao_chrome.py에 `csv.field_size_limit(...)`를 추가해야 합니다
 
 원하면 바로 반영하겠습니다.
 
@@ -908,7 +908,7 @@ csv.field_size_limit(sys.maxsize)
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 변경 내용:
 - 파일 상단에 아래 설정 추가
@@ -932,10 +932,10 @@ shlib-shenbao-dataset-workflow\shenbao_textdata 내 csv 내용 중에서, list_t
 
 ## 답변 4-1
 검토 대상:
-- [shenbao_textdata_lixian_1to7203.csv](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\shenbao_textdata\shenbao_textdata_lixian_1to7203.csv)
-- [shenbao_textdata_xianfa_1to18648.csv](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\shenbao_textdata\shenbao_textdata_xianfa_1to18648.csv)
-- [shenbao_textdata_xianzheng_1to9906.csv](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\shenbao_textdata\shenbao_textdata_xianzheng_1to9906.csv)
-- [shenbao_textdata_zhixian_1to4322.csv](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\shenbao_textdata\shenbao_textdata_zhixian_1to4322.csv)
+- shenbao_textdata_lixian_1to7203.csv
+- shenbao_textdata_xianfa_1to18648.csv
+- shenbao_textdata_xianzheng_1to9906.csv
+- shenbao_textdata_zhixian_1to4322.csv
 
 비교 방식:
 - `list_title` 앞의 `숫자. ` 부분은 제거했습니다.
@@ -1450,7 +1450,7 @@ HTML 구조만 놓고 보면 `xianfa` 726의 `title`이 수집되지 않을 이�
 
 1. **긴 본문으로 인한 Playwright 처리 지연**
    
-   이 개체의 `text`는 322,522자로 매우 깁니다. 본문이 비정상적으로 긴 광고 묶음 페이지이기 때문에, 상세 페이지 로드 직후 DOM 접근이나 `inner_text()` 호출이 지연되었을 가능성이 있습니다. 현재 코드에서 제목 추출은 [crawl_shenbao_text_chrome.py](C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\crawl_shenbao_text_chrome.py):439의 `extract_detail_title()`에서 이루어지는데, 내부적으로 `h1.inner_text()`를 호출합니다. `inner_text()`는 화면에 표시되는 텍스트를 계산하는 방식이라, 매우 긴 페이지에서는 `textContent`보다 브라우저 처리 부담이 큽니다.
+   이 개체의 `text`는 322,522자로 매우 깁니다. 본문이 비정상적으로 긴 광고 묶음 페이지이기 때문에, 상세 페이지 로드 직후 DOM 접근이나 `inner_text()` 호출이 지연되었을 가능성이 있습니다. 현재 코드에서 제목 추출은 crawl_shenbao_text_chrome.py:439의 `extract_detail_title()`에서 이루어지는데, 내부적으로 `h1.inner_text()`를 호출합니다. `inner_text()`는 화면에 표시되는 텍스트를 계산하는 방식이라, 매우 긴 페이지에서는 `textContent`보다 브라우저 처리 부담이 큽니다.
 
 2. **`title` 추출과 `text` 추출이 서로 독립적으로 저장됨**
    

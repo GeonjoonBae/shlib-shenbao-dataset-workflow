@@ -2039,7 +2039,7 @@ Stage 3. Preprocess articles
 
 작성한 코드:
 
-[shenbao_preprocess_combine.py](C:/Users/class/Documents/coding/shenbao_preprocess_combine.py)
+shenbao_preprocess_combine.py
 
 기본 실행 명령어:
 
@@ -2064,9 +2064,9 @@ C:\Users\class\Documents\coding\shlib-shenbao-dataset-workflow\shenbao_textdata\
 
 | 단계 | 파일 | 행 수 |
 |---|---|---:|
-| Stage 1 | [shenbao_constitution_text_stage1_appended_rows.csv](C:/Users/class/Documents/coding/shlib-shenbao-dataset-workflow/shenbao_textdata/preprocess/shenbao_constitution_text_stage1_appended_rows.csv) | 40,079 |
-| Stage 2 | [shenbao_constitution_text_stage2_deduplicated_articles.csv](C:/Users/class/Documents/coding/shlib-shenbao-dataset-workflow/shenbao_textdata/preprocess/shenbao_constitution_text_stage2_deduplicated_articles.csv) | 33,513 |
-| Stage 3 | [shenbao_constitution_text_stage3_preprocessed_articles.csv](C:/Users/class/Documents/coding/shlib-shenbao-dataset-workflow/shenbao_textdata/preprocess/shenbao_constitution_text_stage3_preprocessed_articles.csv) | 33,513 |
+| Stage 1 | shenbao_constitution_text_stage1_appended_rows.csv | 40,079 |
+| Stage 2 | shenbao_constitution_text_stage2_deduplicated_articles.csv | 33,513 |
+| Stage 3 | shenbao_constitution_text_stage3_preprocessed_articles.csv | 33,513 |
 
 `dataset_label` 기본값은 `constitution`으로 설정했습니다. 다른 라벨로 만들고 싶으면 다음처럼 실행하면 됩니다.
 

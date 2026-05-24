@@ -582,8 +582,8 @@ Playwright 설치는 끝났습니다. 스크립트 문법만 빠르게 확인한
 진행 가능한 상태로 만들어뒀습니다.
 
 생성한 파일:
-- 세션 저장: [save_yitlink_whale_session.py](C:\Users\class\Documents\coding\save_yitlink_whale_session.py)
-- 수집 실행: [crawl_yitlink_whale.py](C:\Users\class\Documents\coding\crawl_yitlink_whale.py)
+- 세션 저장: save_yitlink_whale_session.py
+- 수집 실행: crawl_yitlink_whale.py
 
 설치 상태:
 - `playwright` 설치 완료
@@ -786,8 +786,8 @@ Whale이 이 조합을 **Playwright가 기대하는 방식으로 안정적으로
 크롬 기준으로 수정했습니다.
 
 수정 파일:
-- [save_yitlink_whale_session.py](C:\Users\class\Documents\coding\save_yitlink_whale_session.py)
-- [crawl_yitlink_whale.py](C:\Users\class\Documents\coding\crawl_yitlink_whale.py)
+- save_yitlink_whale_session.py
+- crawl_yitlink_whale.py
 
 변경 내용:
 - 기본 브라우저 경로를 `C:\Program Files\Google\Chrome\Application\chrome.exe`로 변경
@@ -951,7 +951,7 @@ python C:\Users\class\Documents\coding\crawl_yitlink_whale.py --max-pages 2
 ```
 
 만약 바로 다시 확인하고 싶으면, 이 파일에 목록 페이지 URL이 들어 있어야 합니다.
-- [yitlink_last_list_url.txt](C:\Users\class\Documents\coding\yitlink_last_list_url.txt)
+- yitlink_last_list_url.txt
 
 원하면 다음 단계로는 결과 블록 selector도 한 번 더 점검해서, 첫 페이지에서 제목 몇 개를 먼저 출력하는 디버그 모드까지 넣어드릴 수 있습니다.
 
@@ -970,8 +970,8 @@ python C:\Users\class\Documents\coding\crawl_yitlink_whale.py --max-pages 2
 맞습니다. 크롬 기준으로 맞춰두는 편이 낫습니다. 파일명 변경까지 반영했습니다.
 
 변경된 파일:
-- [save_shenbao_chrome_session.py](C:\Users\class\Documents\coding\save_shenbao_chrome_session.py)
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- save_shenbao_chrome_session.py
+- crawl_shenbao_chrome.py
 
 추가 수정:
 - 크롤러 내부 안내 문구도 `save_shenbao_chrome_session.py` 기준으로 바꿨습니다.
@@ -1016,7 +1016,7 @@ Saved 0 rows to C:\Users\class\Documents\coding\yitlink_articles.csv
 
 - `https://z.library.sh.cn/http/80/77/30/1/10/yitlink/`
 
-그리고 저장된 URL 파일 [yitlink_last_list_url.txt](C:\Users\class\Documents\coding\yitlink_last_list_url.txt) 안에도 **이 루트 URL만 들어 있습니다**.
+그리고 저장된 URL 파일 yitlink_last_list_url.txt 안에도 **이 루트 URL만 들어 있습니다**.
 
 즉 크롤러는 잘못 동작한 게 아니라,
 - 저장된 세션으로
@@ -1064,7 +1064,7 @@ Saved 0 rows to C:\Users\class\Documents\coding\yitlink_articles.csv
 로 바꿔드리겠습니다.
 
 ---
-단일 스크립트 방식으로 [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)를 바꿨습니다.
+단일 스크립트 방식으로 crawl_shenbao_chrome.py를 바꿨습니다.
 
 변경 내용:
 - `storage_state.json`을 더 이상 읽지 않음
@@ -1089,10 +1089,10 @@ python C:\Users\class\Documents\coding\crawl_shenbao_chrome.py --max-pages 2
 5. 그 시점의 현재 페이지부터 수집 시작
 
 출력:
-- [yitlink_articles.csv](C:\Users\class\Documents\coding\yitlink_articles.csv)
+- yitlink_articles.csv
 
 참고:
-- [save_yitlink_chrome_session.py](C:\Users\class\Documents\coding\save_yitlink_chrome_session.py)는 이제 이 방식에서는 필요 없습니다.
+- save_yitlink_chrome_session.py는 이제 이 방식에서는 필요 없습니다.
 - 새 스크립트는 문법 검증까지 끝났습니다.
 
 다음으로는 `--max-pages 2`로 먼저 시험해보는 게 맞습니다. If it still returns 0, the next issue is selector mismatch, not login/session.
@@ -1110,7 +1110,7 @@ crawl_shenbao_chrome.py 의 코드를 확인해서, 해당 코드를 다른 사�
 핵심 문제는 4가지입니다.
 
 **1. Chrome 경로가 하드코딩돼 있음**
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L18)
+- crawl_shenbao_chrome.py
 - 현재 기본값:
   - `C:\Program Files\Google\Chrome\Application\chrome.exe`
 
@@ -1121,12 +1121,12 @@ crawl_shenbao_chrome.py 의 코드를 확인해서, 해당 코드를 다른 사�
 바로 실패합니다.
 
 현재 코드는 이 경로가 없으면 예외를 냅니다.
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L629)
+- crawl_shenbao_chrome.py
 
 즉 **다른 사용자 PC에서 가장 먼저 깨질 가능성이 높습니다.**
 
 **2. 출력 폴더가 작성자 PC 절대경로로 하드코딩돼 있음**
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L19)
+- crawl_shenbao_chrome.py
 - 현재 기본값:
   - `C:\Users\class\Documents\coding\shenbao\shenbao_textdata`
 
@@ -1141,7 +1141,7 @@ crawl_shenbao_chrome.py 의 코드를 확인해서, 해당 코드를 다른 사�
 즉 **working directory에 두기만 해서는 원하는 위치에 저장되지 않습니다.**
 
 **3. Playwright 의존성이 선설치되어 있어야 함**
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L10-L14)
+- crawl_shenbao_chrome.py
 
 필수:
 - Python
@@ -1180,7 +1180,7 @@ python -m pip install playwright
 
 **1. `CHROME_PATH`**
 현재:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L18)
+- crawl_shenbao_chrome.py
 
 권장:
 - 기본값을 하드코딩 절대경로가 아니라 `None` 또는 자동 탐색으로 바꾸기
@@ -1195,7 +1195,7 @@ python -m pip install playwright
 
 **2. `OUTPUT_DIR`**
 현재:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py#L19)
+- crawl_shenbao_chrome.py
 
 권장:
 - 스크립트 파일 기준 상대경로로 변경
@@ -1253,8 +1253,8 @@ OUTPUT_DIR = BASE_DIR / "shenbao" / "shenbao_textdata"
 적용했습니다.
 
 수정 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
-- [README.md](C:\Users\class\Documents\coding\shenbao\README.md)
+- crawl_shenbao_chrome.py
+- README.md
 
 핵심 변경:
 - 브라우저 경로 하드코딩 제거
@@ -1274,15 +1274,15 @@ OUTPUT_DIR = BASE_DIR / "shenbao" / "shenbao_textdata"
   - 출력 경로 동작 방식 정리
 
 중요한 구현 지점:
-- Playwright import/환경 체크: [crawl_shenbao_chrome.py:10](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:10)
-- 기본 출력 경로 상대화: [crawl_shenbao_chrome.py:26](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:26)
-- Chrome 자동 탐색 후보: [crawl_shenbao_chrome.py:28](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:28)
-- `--chrome-path`, `--output-dir` 기본값/설명 변경: [crawl_shenbao_chrome.py:52](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:52)
-- 출력 폴더 자동 생성 및 런타임 체크: [crawl_shenbao_chrome.py:136](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:136)
-- 실행 시작 전 체크 적용: [crawl_shenbao_chrome.py:669](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:669)
+- Playwright import/환경 체크: crawl_shenbao_chrome.py:10
+- 기본 출력 경로 상대화: crawl_shenbao_chrome.py:26
+- Chrome 자동 탐색 후보: crawl_shenbao_chrome.py:28
+- `--chrome-path`, `--output-dir` 기본값/설명 변경: crawl_shenbao_chrome.py:52
+- 출력 폴더 자동 생성 및 런타임 체크: crawl_shenbao_chrome.py:136
+- 실행 시작 전 체크 적용: crawl_shenbao_chrome.py:669
 
 README 위치:
-- [README.md](C:\Users\class\Documents\coding\shenbao\README.md)
+- README.md
 
 검증:
 - `python -m py_compile C:\Users\class\Documents\coding\crawl_shenbao_chrome.py` 통과
@@ -1309,7 +1309,7 @@ README 위치:
 - 즉 **실행 문법 문제라기보다 거의 전부 타입체커 문제**입니다
 
 대상 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 핵심 원인 1:
 - Playwright가 없을 때를 대비해 `Page`, `Frame`, `Locator`, `sync_playwright`를 `try/except`로 감쌌고,
@@ -1320,19 +1320,19 @@ README 위치:
 - `Variable not allowed in type expression`
 
 대표 위치:
-- [crawl_shenbao_chrome.py:55](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:55)
-- [crawl_shenbao_chrome.py:56](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:56)
-- [crawl_shenbao_chrome.py:193](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:193)
-- [crawl_shenbao_chrome.py:207](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:207)
-- [crawl_shenbao_chrome.py:221](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:221)
-- [crawl_shenbao_chrome.py:777](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:777)
+- crawl_shenbao_chrome.py:55
+- crawl_shenbao_chrome.py:56
+- crawl_shenbao_chrome.py:193
+- crawl_shenbao_chrome.py:207
+- crawl_shenbao_chrome.py:221
+- crawl_shenbao_chrome.py:777
 
 핵심 원인 2:
 - `sync_playwright`도 fallback에서 `None`이 될 수 있게 해 두었기 때문에
 - Pyright가 여기서 optional call을 경고합니다
 
 위치:
-- [crawl_shenbao_chrome.py:711](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py:711)
+- crawl_shenbao_chrome.py:711
 
 즉 성격을 정리하면:
 1. **대부분의 문제**
@@ -1440,7 +1440,7 @@ Playwright를 그냥 필수 import로 두는 방식으로 수정해줘
 수정했습니다.
 
 변경 파일:
-- [crawl_shenbao_chrome.py](C:\Users\class\Documents\coding\crawl_shenbao_chrome.py)
+- crawl_shenbao_chrome.py
 
 변경 내용:
 - `playwright`를 다시 **필수 import**로 되돌렸습니다.
