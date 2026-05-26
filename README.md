@@ -1,5 +1,5 @@
-# 상하이도서관 《申報》 텍스트 데이터와 그 수집-전처리 절차
-## Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing
+# 상하이도서관 《申報》 텍스트 데이터와 그 수집·전처리 절차
+## Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collection and Preprocessing
 
 <details> <summary><h3>데이터 인용 예시</h3></summary>
 - Bae, Geonjoon. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow
@@ -14,12 +14,11 @@
 
 ## README 목차
 - [저장소 개요](#저장소-개요)
+- [기준 스크립트](#기준-스크립트)
 - [실행 환경](#실행-환경)
-- [저장소 구성](#저장소-구성)
-- [코드 소개](#코드-소개)
-- [자료 소개](#자료-소개)
-- [수집 절차](#수집-절차)
-- [전처리 절차](#전처리-절차)
+- [수집 스크립트 개요](#수집-스크립트-개요)
+- [전처리 스크립트 개요](#전처리-스크립트-개요)
+- [예시 데이터와 산출물 규모](#예시-데이터와-산출물-규모)
 - [사용 방법](#사용-방법)
 - [산출물 구조](#산출물-구조)
 - [유의사항](#유의사항)
@@ -27,14 +26,23 @@
 ## 저장소 개요
 `《申報》`는 1872년부터 1949년까지 발행된 중국 근현대사의 대표적 일간지이며, 정치사·사회사·문화사·경제사 연구 전반에서 중요한 사료로 활용된다. 이 저장소는 상하이도서관 `《申報》` 데이터베이스에서 특정 검색어 또는 특정 기간에 해당하는 기사 텍스트를 수집하고, 이를 하나의 연구용 기사 단위 데이터셋으로 전처리하는 전체 절차를 재현할 수 있도록 설계되었다.
 
-이 워크플로우는 다음 두 단계로 이루어진다.
+## 기준 스크립트
+현재 워크플로우의 주 스크립트는 아래 두 개다.
 
-1. `crawl_shenbao_text_chrome.py`
-   - 상하이도서관 로그인 이후 사용자가 직접 검색 결과 목록을 준비하면, 크롬 브라우저를 제어해 기사 목록과 상세 페이지를 순차적으로 순회하며 텍스트 데이터를 수집한다.
-2. `shenbao_textdata_preprocess_combine.py`
-   - 여러 수집 기준별 원본 CSV를 병합하고, `detail_url`의 기사 식별자(`article_id`)를 기준으로 중복 행을 통합한 뒤, 발행 정보와 후행 메타데이터를 분리하고 제목/본문 문자열을 정제한다.
+1. `collect_shenbao_textdata_chrome_ver3_1.py`
+- 최신 수집 스크립트
+- Google Chrome을 직접 열고, 로그인 완료 후 결과 목록 프레임을 탐지해 수집한다.
+- 수집 결과는 16열 CSV로 저장된다.
 
-본 작업의 코드 작성과 수정 과정에는 OpenAI Codex 기반 GPT-5.4 코딩 에이전트를 활용했으며, 사용자가 요구사항·오류 메시지·HTML 구조 예시를 제시하고 이에 따라 코드를 반복 수정하는 Human-in-the-Loop 방식으로 진행되었다. 저장소는 AI Coding Agent 대화 기록, 스크립트, 수집 및 전처리 데이터 샘플을 제공한다.
+2. `shenbao_textdata_preprocess_combine_ver2.py`
+- 최신 전처리·통합 스크립트
+- 여러 원본 수집 CSV를 병합하고, `article_id` 기준 대표 기사 행을 고른 뒤, 분석용 텍스트 `analysis_text`를 생성한다.
+
+이전 버전 스크립트와 보조 스크립트는 참고용이다.
+
+- 이전 버전 수집 스크립트: `collect_shenbao_textdata_chrome_ver2.py`, `collect_shenbao_textdata_chrome_ver3.py`: 
+- 이전 버전 전처리 스크립트: `shenbao_textdata_preprocess_combine.py`
+- 예외 행 식별 실험을 위한 보조 스크립트: `shenbao_textdata_exceptions.py`
 
 ## 실행 환경
 - 운영체제: Windows 로컬 환경
@@ -44,193 +52,292 @@
 - 브라우저 자동화: Playwright for Python 1.58.0
 - 브라우저: Google Chrome
 
-## 저장소 구성 
+## 저장소 구성
 ```text
 shlib-shenbao-dataset-workflow/
 ├─ README.md
-├─ crawl_shenbao_text_chrome.py
+├─ collect_shenbao_textdata_chrome_ver2.py
+├─ collect_shenbao_textdata_chrome_ver3.py
+├─ collect_shenbao_textdata_chrome_ver3_1.py
 ├─ shenbao_textdata_exceptions.py
 ├─ shenbao_textdata_preprocess_combine.py
+├─ shenbao_textdata_preprocess_combine_ver2.py
 ├─ ai_coding_agent_dialogues/
-│  ├─ 1_coding_1_상하이도서관 신보 데이터 크롤링 코드 작성.md
-│  ├─ 1_coding_2_기사 페이지의 html 구조가 상이한 경우를 대비한 코드 수정.md
-│  ├─ 2_preprocess_1_예외 데이터 식별.md
-│  └─ 2_preprocess_2_통합 csv 제작.md
+│  ├─ 01_coding_1_상하이도서관 신보 데이터 크롤링 코드 작성.md
+│  ├─ 01_coding_2_기사 페이지의 html 구조가 상이한 경우를 대비한 코드 수정.md
+│  ├─ 02_preprocess_1_예외 데이터 식별.md
+│  ├─ 02_preprocess_2_통합 csv 제작.md
+│  ├─ 03_pipeline-revision_1_기존 코드의 fallback 기능으로 인한 오수집 개선.md
+│  ├─ 03_pipeline-revision_2_lv1_div의 수집 로직 개선.md
+│  ├─ 03_pipeline-revision_3_수집 구조 개선에 따른 전처리-통합 코드 수정.md
+│  ├─ 10_data-profile_1_데이터 구조 및 필드별 충실도 검토.md
+│  ├─ 10_data-profile_2_중복 개체 간 데이터 일치.md
+│  ├─ ...
+│  ├─ 10_data-profile_11_전처리 결과물의 특성과 column별 분포 특징.md
+│  └─ 10_data-profile_12_분석용 constitutional 데이터셋의 시간 정보 관련 통계.md
 └─ shenbao_textdata/
    ├─ (sample)shenbao_textdata_lixian_1to7203.csv
    ├─ (sample)shenbao_textdata_xianfa_1to18648.csv
    ├─ (sample)shenbao_textdata_xianzheng_1to9906.csv
    ├─ (sample)shenbao_textdata_zhixian_1to4322.csv
    └─ preprocess/
-      ├─ (sample)shenbao_textdata_stage1_appended_rows_constitution.csv
-      ├─ (sample)shenbao_textdata_stage2_deduplicated_articles_constitution.csv
-      └─ (sample)shenbao_textdata_stage3_preprocessed_articles_constitution.csv
+      ├─ (sample)shenbao_textdata_stage1_appended_rows_constitutional.csv
+      ├─ (sample)shenbao_textdata_stage2_deduplicated_articles_constitutional.csv
+      └─ (sample)shenbao_textdata_stage3_preprocessed_articles_constitutional.csv
 ```
 
-## 코드 소개
-### 1. `crawl_shenbao_text_chrome.py`
+## 수집 스크립트 개요
+#### `collect_shenbao_textdata_chrome_ver3_1.py`
 상하이도서관 `《申報》` 데이터베이스 검색 결과를 대상으로 기사 텍스트를 수집하는 스크립트다.
 
-주요 기능:
-- 수동 로그인 이후 자동 수집
-- 수집 기준 레이블(`label`) 기반 파일 저장
-- 중간 저장(`--save-every`)
-- 작업 재개(`--label`, `--resume-latest`, `--resume-file`)
-- 최대 수집 페이지 제한(`--max-pages`)
-- CSV 필드 길이 제한 확장(`csv.field_size_limit(1_000_000)`)
+- 시작 URL 기본값: `https://z.library.sh.cn/http/80/77/30/1/10/yitlink/`
+- 기본 출력 경로: 스크립트 기준 `./shenbao/shenbao_textdata`
+- Chrome 기본 탐색 경로:
+  - `C:\Program Files\Google\Chrome\Application\chrome.exe`
+  - `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`
+- 결과 목록과 상세 페이지는 프레임을 포함한 현재 브라우저 컨텍스트 전체에서 탐지한다.
+- 로그인 세션이 `passport.library.sh.cn`로 되돌아가면 `SessionExpiredError`로 감지하고 즉시 저장 후 종료한다.
 
-출력 파일 형식:
-```text
-shenbao_textdata_{label}_{start_index}to{end_index}.csv
-```
-
-### 2. `shenbao_textdata_exceptions.py`
-원본 수집 CSV에서 예외 행을 식별해 별도 CSV로 정리하는 보조 스크립트다. `publish`, `detail_url`, `text` 세 열을 기준으로 예외 여부와 사유를 판정한다. 이 스크립트는 `2_preprocess_1_예외 데이터 식별.md`의 대화 내용을 바탕으로 작성되었다. 해당 코드로 작성된 예외 데이터는 3. `shenbao_textdata_preprocess_combine.py`의 전처리 규칙을 구체화하는 참고 자료로 활용되었다. 실제 워크플로우에서는 사용하지 않는다.
-
-주요 기능:
-- 네 원본 CSV 자동 탐색
-- `publish` 예외 판정(`topic_only`, `start_with_date`)
-- `detail_url` 예외 판정(`sp_ad`, `no_detail_url`)
-- `text` 예외 판정(`error_text`, `metadata_only`, `short_text`)
-- 예외 행만 별도 CSV로 저장
-
-출력 파일 형식:
-```text
-shenbao_textdata_{label}_exception_rows.csv
-```
-
-### 3. `shenbao_textdata_preprocess_combine.py`
-여러 원본 CSV를 하나의 통합 데이터셋으로 정리하는 전처리 스크립트다.
-
-주요 기능:
-- 여러 수집 결과 파일 단순 병합
-- `detail_url`에서 `article_id`, `qrynewstype` 추출
-- `article_id` 기준 중복 기사 통합
-- 대표행 선택 사유 기록
-- 발행 정보, 기년, 주제, 범주 등 메타데이터 분리
-- 제목/본문 정제
-- 연구용 기사 단위 CSV 3종 산출
-
-출력 파일 형식:
-```text
-shenbao_textdata_stage1_appended_rows_{dataset_label}.csv
-shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv
-shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv
-```
-
-## 자료 소개
-### 1. 원본 수집 데이터
-원고에서 실제 수집한 전체 결과는 다음 네 묶음이다.
-
-- `shenbao_textdata_lixian_1to7203.csv`
-- `shenbao_textdata_xianfa_1to18648.csv`
-- `shenbao_textdata_xianzheng_1to9906.csv`
-- `shenbao_textdata_zhixian_1to4322.csv`
-
-이 네 파일은 각각 `立憲`, `憲法`, `憲政`, `制憲` 검색 결과를 수집한 데이터이며, 전체 행 수는 40,079건이다. 저장소에는 재배포 및 용량 문제를 고려해 전체 원본 대신 `(sample)` 접두부가 붙은 샘플 CSV만 포함했다.
-
-원본 CSV의 기본 열 구조는 다음과 같다.
+수집 CSV의 열 구조는 아래 16개다.
 
 ```text
-label, page, item_index, list_title, publish, detail_url, title, text
+label
+page
+item_index
+list_title
+detail_url
+publish_variant
+date
+issue_page
+special_column
+h1
+lv1_div
+content-box2
+era_year
+category
+theme
+collect_error
 ```
 
-각 열의 의미:
-- `label`: 검색어별 수집 단위 식별값
-- `page`: 검색 결과 목록 페이지 번호
-- `item_index`: 검색 결과 전체에서의 기사 일련번호
-- `list_title`: 목록 페이지에 표시된 기사 제목
-- `publish`: 상세 페이지 상단의 발행 정보 문자열
-- `detail_url`: 상세 페이지 URL
-- `title`: 상세 페이지 `h1`에서 확보한 제목
-- `text`: 상세 페이지 본문 문자열
+각 열의 의미는 다음과 같다.
 
-### 2. 전처리 결과 데이터
-저장소에는 `constitution` 데이터셋에 대한 단계별 샘플 결과도 포함되어 있다.
+- `label`: 검색어 또는 수집 단위를 식별하는 사용자 레이블
+- `page`: 결과 목록 페이지 번호
+- `item_index`: 전체 결과에서의 기사 번호
+- `list_title`: 목록 화면 제목
+- `detail_url`: 기사 상세 URL
+- `publish_variant`: 상세 페이지 좌측 상단 발행 정보 문자열
+- `date`: 상세 페이지에서 추출한 날짜
+- `issue_page`: 판차 또는 면수 정보
+- `special_column`: 특집면 또는 분류 광고 등 별도 표지 정보
+- `h1`: 기사 제목 영역
+- `lv1_div`: 제목 직후 보조 표지 영역
+- `content-box2`: 본문 영역
+- `era_year`: 후행 메타데이터에 포함된 연호 문자열
+- `category`: 후행 메타데이터의 범주 정보
+- `theme`: 후행 메타데이터의 주제 정보
+- `collect_error`: 수집 실패 시 오류 원인과 URL 정보를 기록하는 열
 
-- `stage1`: 여러 원본 CSV를 단순 병합한 행 단위 데이터
-- `stage2`: `article_id` 기준으로 중복 통합한 기사 단위 데이터
-- `stage3`: 메타데이터 분리와 문자열 정제를 수행한 최종 연구용 데이터
+### 수집 절차
+1. 터미널에서 스크립트를 실행한다.
+2. `--label`, `--resume-file`, `--resume-latest`가 없으면 레이블을 직접 입력한다.
+3. 스크립트가 Chrome을 열고 시작 URL로 이동한다.
+4. 사용자가 상하이도서관 계정으로 로그인한다.
+5. 사용자가 원하는 검색어 또는 기간 조건으로 결과 목록 첫 페이지를 준비한다.
+6. 사용자가 한 페이지 표시 건수를 `100`으로 바꾼다.
+7. 터미널에서 Enter를 누르면 스크립트가 결과 프레임을 탐지하고 자동 순회를 시작한다.
+8. 각 기사마다 목록 제목을 읽고, 링크를 클릭하고, 상세 페이지 필드를 추출한 뒤, 목록으로 복귀한다.
+9. `--save-every` 간격마다 중간 저장한다.
+10. 세션 만료, 페이지 전환 실패, 또는 마지막 페이지 도달 시 현재까지 결과를 저장하고 종료한다.
 
-### 3. AI 코딩 에이전트 대화 기록
-`ai_coding_agent_dialogues/` 폴더에는 이 저장소의 주요 스크립트가 작성·수정되는 과정에서 AI 코딩 에이전트와 주고받은 마크다운 대화 기록 4종을 수록했다.
-
-- `1_coding_1_상하이도서관 신보 데이터 크롤링 코드 작성.md`: 수집 스크립트의 초기 설계와 반자동 크롤링 흐름 정리
-- `1_coding_2_기사 페이지의 html 구조가 상이한 경우를 대비한 코드 수정.md`: 상세 페이지 HTML 구조 예외 대응, 필드 구조 조정, 재개 로직 및 수집 안정화
-- `2_preprocess_1_예외 데이터 식별.md`: 원본 CSV의 예외 행 검토와 `shenbao_textdata_exceptions.py` 작성
-- `2_preprocess_2_통합 csv 제작.md`: 예외 검토 결과를 전제로 한 통합 전처리 스크립트 설계와 `stage1`-`stage2`-`stage3` 산출물 구조 확정
-
-이 문서들은 코드와 데이터가 만들어진 과정을 보여주는 작업 기록이다. 관련 내용을 한 문서에 정리하는 것을 원칙으로 했기 때문에, 문서 번호가 대화 순서를 의미하지는 않는다. 실제 대화 순서는 대체로 `1_coding_1`->`2_preprocess_1`->`1_coding_2`->`2_preprocess_2`이며, 이는 `2_preprocess_1` 대화를 통해 예외 데이터 추출 스크립트를 작성하던 중 기존 수집 스크립트의 오류 발생율이 다소 높아 수동 보완 부담이 커지는 것을 개선하고자 `1_coding_2` 대화가 시작되었기 때문이다. 단, 문서 내 동일 최상위 헤더(#)내의 순서(`프롬프트 1-1` -> `프롬프트 1-2` -> ...)는 실제 대화 순서와 동일하다. 
-
-## 수집 절차
-수집 스크립트의 기본 흐름은 다음과 같다.
-
-1. 사용자가 터미널에서 `crawl_shenbao_text_chrome.py`를 실행한다.
-2. 스크립트가 레이블 입력을 요구하거나, 명령어로 전달된 레이블을 사용한다.
-3. 스크립트가 Chrome을 열고 상하이도서관 `《申報》` 데이터베이스 로그인 페이지로 이동한다.
-4. 사용자가 직접 로그인한 뒤, 원하는 검색어 또는 기간 조건으로 결과 목록 첫 페이지를 연다.
-5. 사용자가 한 페이지당 결과 수를 `100`으로 설정한다.
-6. 터미널로 돌아와 Enter 키를 입력하면, 스크립트가 목록 페이지와 상세 페이지를 순차적으로 이동하며 기사 정보를 수집한다.
-7. 일정 건수마다 CSV를 저장하고, 오류나 세션 종료가 발생하면 현재까지의 결과를 저장한 뒤 종료한다.
-8. 필요하면 기존 CSV를 기준으로 작업을 재개한다.
-
-이 워크플로우는 사이트가 OAuth 로그인, CAPTCHA, 동적 프레임 전환을 사용하기 때문에 완전 자동 방식이 아니라 반자동 방식으로 설계되었다.
-
-## 전처리 절차
-전처리 스크립트는 3단계로 구성된다.
-
-### 1단계. 원본 CSV 병합
-- 여러 원본 `shenbao_textdata_*.csv` 파일을 하나로 합친다.
-- 원본 열 이름 뒤에 `_raw`를 붙여 보존한다.
-- `preprocess_index`를 추가한다.
-
-생성 파일:
+### 수집 스크립트 주요 옵션(CLI)
 ```text
-shenbao_textdata_stage1_appended_rows_{dataset_label}.csv
+--start-url                시작 URL 지정
+--chrome-path              Chrome 실행 파일 경로 직접 지정
+--output-dir               출력 디렉터리 지정
+--label                    수집 레이블 지정
+--start-page               현재 열려 있는 결과 화면의 페이지 번호 지정
+--max-pages                최대 수집 페이지 수 제한
+--wait-seconds             기본 대기 시간
+--extended-wait-seconds    확장 대기 시간
+--detail-timeout-seconds   이전 버전 호환용 옵션
+--save-every               N건마다 중간 저장
+--resume-file              특정 결과 파일에서 재개
+--resume-latest            최신 결과 파일에서 재개
 ```
 
-### 2단계. 중복 기사 통합
-- `detail_url_raw`에서 `article_id`와 `qrynewstype`를 추출한다.
-- `article_id` 기준으로 중복 행을 묶는다.
-- 대표행은 다음 우선순위에 따라 선택한다.
-  - `[ERROR]`가 아닌 `text_raw`
-  - `text_raw` 존재
-  - `title_raw` 존재
-  - 더 긴 `text_raw`
-  - 더 작은 `preprocess_index`
-- 선택 사유는 `select_reason`에 기록한다.
-- 중복 충돌 여부와 유형을 `collision`, `collision_type`에 기록한다.
+#### 재개 옵션
+- `--label`만 주더라도 동일 레이블의 기존 결과 파일이 있으면 자동 재개 대상으로 삼을 수 있다.
+- `--resume-latest`는 출력 경로에서 가장 최근 수정된 파일을 찾는다.
+- `--resume-file`은 특정 파일을 직접 지정한다.
+- 재개 시에는 마지막으로 저장된 행을 다시 한 번 재생하면서 이어서 수집하므로, 직전 저장 지점의 마지막 항목은 중복 없이 안정적으로 이어지는 구조다.
 
-생성 파일:
+## 전처리 스크립트 개요
+### `shenbao_textdata_preprocess_combine_ver2.py`
+여러 원본 CSV를 하나의 통합 데이터셋으로 정리하는 3단계 전처리 스크립트다.
+
+1. Stage 1: 원본 수집 CSV 단순 병합
+2. Stage 2: `article_id` 기준 대표 기사 선정 및 중복 정보 통합
+3. Stage 3: 정렬, 연호 분리, 분석용 텍스트 생성
+
+입력 파일 탐색 규칙은 아래와 같다.
+
+- 파일 패턴: `shenbao_textdata_*_1to*.csv`
+- 아래 문자열이 파일명에 포함된 경우 원본 후보에서 제외한다.
+  - `stage1`, `stage2`, `stage3`
+  - `preprocess`, `deduplicated`, `preprocessed`, `appended`
+  - `combined`, `exception`, `marker`, `inpageordertest`
+- 입력 디렉터리를 주지 않으면 `shenbao/shenbao_textdata`, `shenbao_textdata`, 저장소 하위 `shenbao_textdata` 등 여러 후보를 순서대로 탐색한다.
+
+전처리 스크립트는 큰 CSV 필드를 안전하게 읽기 위해 Windows 환경을 고려한 `csv.field_size_limit` fallback 루프를 포함한다. 또한 UTF-8을 기본으로 사용하고, 헤더 BOM이 감지되면 `utf-8-sig`로 다시 읽는다.
+
+### Stage 1: 단순 병합
+Stage 1 출력 열은 아래 17개다.
+
 ```text
-shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv
+stage1_index
+label
+page
+item_index
+list_title
+detail_url
+publish_variant
+date
+issue_page
+special_column
+h1
+lv1_div
+content_box2
+era_year
+category
+theme
+collect_error
 ```
 
-### 3단계. 메타데이터 분리와 문자열 정제
-- `publish_raw`에서 발행 정보 분리
-  - `publish_variant`
-  - `publish_date`
-  - `page_issue`
-  - `publish_tail`
-- 제목/본문 후행 메타데이터 분리
-  - `topic`
-  - `chinese_era_year`
-  - `japanese_era_year`
-  - `category`
-  - `metadata_source`
-- 제목 정제
-  - `title_clean`
-  - `title_exist`
-  - `title_source`
-- 본문 정제
-  - `text_clean`
-  - `text_exception`
-  - `text_exception_reason`
+설명:
 
-생성 파일:
+- Stage 1은 여러 원본 CSV를 행 단위로 이어 붙인다.
+- 원본 수집 CSV의 `content-box2` 열은 Stage 1부터 `content_box2`로 정규화된다.
+- 각 행에는 병합 순서를 나타내는 `stage1_index`가 새로 추가된다.
+
+### Stage 2: `article_id` 기준 대표 기사 선정 후 중복 제거
+Stage 2 출력 열은 아래 22개다.
+
 ```text
-shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv
+dataset_label
+source_labels
+stage1_indices
+representative_label
+representative_item_index
+select_reason
+article_id
+qrynewstype
+detail_url
+publish_variant
+date
+issue_page
+special_column
+h1
+lv1_div
+content_box2
+era_year
+category
+theme
+collect_error
+collision
+collision_columns
 ```
+
+Stage 2의 핵심 규칙은 다음과 같다.
+
+- `detail_url`에서 `article_id`와 `qrynewstype`를 추출한다.
+- `article_id`가 없는 행은 중복 제거를 수행할 수 없으므로 예외로 처리한다.
+- 같은 `article_id`를 가진 행들 중 대표행은 다음 우선순위로 선정한다.
+  1. `collect_error`가 비어 있는 행 우선
+  2. `issue_page`가 있는 행 우선
+  3. `theme`가 더 긴 행 우선
+  4. `content_box2`가 더 긴 행 우선
+  5. `h1`이 더 긴 행 우선
+  6. `lv1_div`가 더 긴 행 우선
+  7. 위 기준으로도 동률이면 `stage1_index`가 가장 작은 행 선택
+- 실제로 대표행을 좁힌 최초 기준은 `select_reason`에 기록한다.
+- 중복 묶음 안에서 차이가 난 열이 있으면 `collision=T`, 차이가 난 열 이름은 `collision_columns`에 세미콜론으로 기록한다.
+
+### Stage 3: 정렬, 연호 분리, 분석용 텍스트 생성
+Stage 3 출력 열은 아래 26개다.
+
+```text
+dataset_label
+dataset_index
+source_labels
+stage1_indices
+representative_label
+representative_item_index
+select_reason
+article_id
+qrynewstype
+publish_variant
+date
+issue_page
+special_column
+era_year
+chinese_era_year
+japanese_era_year
+category
+theme
+collect_error
+collision
+collision_columns
+h1
+lv1_div
+content_box2
+analysis_text
+analysis_text_rules
+```
+
+Stage 3의 처리 내용은 아래와 같다.
+
+- 정렬 우선순위:
+  1. `date` 오름차순
+  2. `qrynewstype` 우선순위 `SP -> SP_AD -> SP_FH -> SP_HK`
+  3. `issue_page` 오름차순
+  4. `article_id` 오름차순
+- 정렬 결과에 따라 `dataset_index`를 새로 부여한다.
+- `era_year`에서 중국 연호와 일본 연호를 분리해 `chinese_era_year`, `japanese_era_year`를 생성한다.
+- `h1`, `lv1_div`, `content_box2`를 바탕으로 분석용 본문 `analysis_text`를 생성한다.
+- 각 행에서 어떤 결합 규칙을 적용했는지는 `analysis_text_rules`에 기록한다.
+
+#### `analysis_text` 생성 규칙
+
+1. `1_drop_h1_for_classified_ad`
+- `special_column`이 `分類廣告`일 때 `h1`을 제외한다.
+
+2. `2_drop_benbaoxun`
+- `lv1_div`가 `本報訊`일 때 `lv1_div`를 제외한다.
+
+3. `3_bracket_dedup`
+- `h1`과 `content_box2` 선두에 중복 구간이 있고, 그 경계 주변에 `〔`가 나타나는 경우 `content_box2`의 중복 선두를 제거한다.
+
+4. `4_delete_lv1_marker`
+- `3_bracket_dedup` 이후 `content_box2`가 `〔{lv1_div}〕` 또는 `（{lv1_div}）` 형태로 시작하면 해당 표지를 제거한다.
+
+5. `5_plain_merge`
+- 위 조건에 해당하지 않으면 `h1`, `lv1_div`, `content_box2`를 공백으로 이어 붙인다.
+
+## 예시 데이터와 산출물 규모
+예시 데이터의 실제 수집·전처리 규모는 아래와 같다.
+
+| 구분 | 파일명 | 데이터 성격 | 행 수 | 열 수 | 시기 범위 |
+| --- | --- | --- | ---: | ---: | --- |
+| 원 수집 데이터 | `shenbao_textdata_zhixian_1to4322.csv` | 검색어 `制憲` | 4,322 | 16 | 1872-08-20 - 1949-05-26 |
+| 원 수집 데이터 | `shenbao_textdata_xianzheng_1to9906.csv` | 검색어 `憲政` | 9,906 | 16 | 1875-08-31 - 1949-05-23 |
+| 원 수집 데이터 | `shenbao_textdata_xianfa_1to18648.csv` | 검색어 `憲法` | 18,648 | 16 | 1873-09-02 - 1949-05-26 |
+| 원 수집 데이터 | `shenbao_textdata_lixian_1to7203.csv` | 검색어 `立憲` | 7,203 | 16 | 1877-06-06 - 1949-05-08 |
+| 전처리 1단계 | `shenbao_textdata_stage1_appended_rows_constitutional.csv` | 단순 병합 | 40,079 | 17 | 1872-08-20 - 1949-05-26 |
+| 전처리 2단계 | `shenbao_textdata_stage2_deduplicated_articles_constitutional.csv` | 중복 제거 | 33,513 | 22 | 1872-08-20 - 1949-05-26 |
+| 전처리 3단계 | `shenbao_textdata_stage3_preprocessed_articles_constitutional.csv` | 분석용 데이터 | 33,513 | 26 | 1872-08-20 - 1949-05-26 |
+
+※ 저장소는 수집 및 전처리 데이터 전체가 아닌  `(sample)` 접두부가 붙은 샘플 데이터만을 제공한다.
 
 ## 사용 방법
 ### 1. 저장소 복제
@@ -240,66 +347,51 @@ cd shlib-shenbao-dataset-workflow
 ```
 
 ### 2. 필수 패키지 설치
-수집 스크립트에는 Playwright가 필요하다.
-
 ```powershell
 pip install playwright
 ```
 
-전처리 스크립트는 Python 표준 라이브러리만 사용한다.
+Google Chrome이 기본 경로가 아닌 곳에 설치되어 있으면 `--chrome-path`를 직접 지정해야 한다.
 
 ### 3. 수집 스크립트 실행
 ```powershell
-python crawl_shenbao_text_chrome.py --label xianfa --save-every 20 --output-dir .\shenbao_textdata
+python .\collect_shenbao_textdata_chrome_ver3_1.py --label xianfa --save-every 20 --output-dir .\shenbao_textdata
+```
+
+부분 수집 예시:
+```powershell
+python .\collect_shenbao_textdata_chrome_ver3_1.py --label xianfa --max-pages 3 --output-dir .\shenbao_textdata
 ```
 
 작업 재개 예시:
 ```powershell
-python crawl_shenbao_text_chrome.py --label xianfa --resume-latest --save-every 20 --output-dir .\shenbao_textdata
-python crawl_shenbao_text_chrome.py --resume-file .\shenbao_textdata\shenbao_textdata_xianfa_1to18648.csv --output-dir .\shenbao_textdata
+python .\collect_shenbao_textdata_chrome_ver3_1.py --label xianfa --resume-latest --save-every 20 --output-dir .\shenbao_textdata
+python .\collect_shenbao_textdata_chrome_ver3_1.py --resume-file .\shenbao_textdata\shenbao_textdata_xianfa_1to18648.csv --output-dir .\shenbao_textdata
 ```
-
-`crawl_shenbao_text_chrome.py`의 기본 출력 경로는 스크립트 기준 `.\shenbao\shenbao_textdata`이지만, 이 저장소에 포함된 샘플 데이터 폴더 구조에 맞추려면 위 예시처럼 `--output-dir .\shenbao_textdata`를 명시하는 편이 편리하다.
 
 ### 4. 전처리 스크립트 실행
 ```powershell
-python shenbao_textdata_preprocess_combine.py --input-dir .\shenbao_textdata --dataset-label constitution
+python .\shenbao_textdata_preprocess_combine_ver2.py --input-dir .\shenbao_textdata --dataset-label constitutional
 ```
 
-`--dataset-label`을 생략하면 터미널에서 값을 입력받는다.
+`--dataset-label`을 생략하면 터미널에서 값을 직접 입력받는다.
 
-## 산출물 구조
-### 1. 원본 수집 CSV
-```text
-label,page,item_index,list_title,publish,detail_url,title,text
-```
+### 5. 산출물 확인
+전처리 완료 후 기본적으로 아래 세 파일이 만들어진다.
 
-예시:
 ```text
-lixian,1,1,1. 制憲議會批準憲草 西德設雛型政府 為德國統一政府樹立基礎,申報 日期：1949-05-08 版次/卷期：02 版 路透社西德波恩城六日電,https://...,制憲議會批準憲草 西德設雛型政府 為德國統一政府樹立基礎,德國政治家已於今日...
-```
-
-### 2. Stage 1
-```text
-preprocess_index,label_raw,page_raw,item_index_raw,list_title_raw,publish_raw,detail_url_raw,title_raw,text_raw
-```
-
-### 3. Stage 2
-```text
-dataset_label,source_labels,preprocess_indices,representative_label,representative_item_index,select_reason,article_id,qrynewstype,label_raw,page_raw,item_index_raw,list_title_raw,publish_raw,detail_url_raw,title_raw,text_raw,collision,collision_type
-```
-
-### 4. Stage 3
-```text
-dataset_label,source_labels,preprocess_indices,representative_label,representative_item_index,select_reason,article_id,qrynewstype,publish_variant,publish_date,page_issue,publish_tail,publish_exception,publish_exception_reason,topic,chinese_era_year,japanese_era_year,category,metadata_source,title_clean,title_exist,title_source,text_clean,text_exception,text_exception_reason,collision,collision_type
+shenbao_textdata_stage1_appended_rows_{dataset_label}.csv
+shenbao_textdata_stage2_deduplicated_articles_{dataset_label}.csv
+shenbao_textdata_stage3_preprocessed_articles_{dataset_label}.csv
 ```
 
 ## 유의사항
 - 상하이도서관 `《申報》` 데이터베이스 접근에는 상하이도서관 계정 로그인이 필요하다.
-- 로그인 이후에도 CAPTCHA와 동적 프레임 전환이 존재하므로, 수집 스크립트는 반자동 방식으로 동작한다.
-- 검색어는 번체 중문으로 입력해야 한다. 간체 중문으로는 결과가 나오지 않는다.
-- 로그인 세션은 실제 운용 시 약 2시간 내외로 유지되었으며, 1회 실행으로 수집 가능한 기사 수는 대체로 2,000건 안팎이었다.
-- 데이터베이스 내 기사 개체 분할 기준이 항상 일관된 것은 아니므로, 한 행이 반드시 하나의 완결된 기사와 정확히 대응한다고 가정할 수는 없다.
-- `qrynewstype=SP_AD`는 광고성 자료 식별에 유용하지만, 광고 전체를 완전히 포괄하지는 않는다.
-- 저장소에는 전체 데이터가 아니라 샘플 데이터만 포함되어 있다.
-- `《申報》` 텍스트는 번체 중문이며, 시대별 문체 차이도 크므로 후속 자연어처리 적용 시 별도의 언어학적 검토가 필요하다.
+- 로그인 이후에도 CAPTCHA, OAuth, 동적 프레임 전환이 존재하므로, 완전 자동 수집이 아니라 반자동 수집을 시행한다.
+- 로그인 세션은 대체로 2시간 내외로 유지된다.
+- 1회 실행으로 수집 가능한 규모는 대체로 2,000건 안팎이다.
+- 검색어는 번체 중문 입력을 요구한다. 간체 중문 입력 시 결과가 출력되지 않는다.
+- 데이터베이스의 기사 개체 분할 기준이 일관적이지 않으므로, 한 행이 반드시 하나의 완결된 기사와 정확히 대응한다고 가정할 수는 없다.
+- `qrynewstype=SP_AD`는 광고성 자료 식별에 유용하지만 광고 전체를 완전히 포괄하지는 않는다.
+- `analysis_text`는 구조적 예외를 줄이기 위한 규칙 기반 결합 결과이며, 원문 영인 이미지 상의 텍스트와 1:1 완전 일치를 보장하지는 않는다.
+- `《申報》` 텍스트는 번체 중문이며 시기별 문체 차이도 크므로, 후속 자연어처리나 계량 분석에는 별도의 언어학적 검토가 필요하다.
