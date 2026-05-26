@@ -14,43 +14,17 @@
 
 ## README 목차
 - [저장소 개요](#저장소-개요)
+- [저장소 구성](#저장소-구성)
 - [기준 스크립트](#기준-스크립트)
 - [실행 환경](#실행-환경)
 - [수집 스크립트 개요](#수집-스크립트-개요)
 - [전처리 스크립트 개요](#전처리-스크립트-개요)
 - [예시 데이터와 산출물 규모](#예시-데이터와-산출물-규모)
 - [사용 방법](#사용-방법)
-- [산출물 구조](#산출물-구조)
 - [유의사항](#유의사항)
 
 ## 저장소 개요
 `《申報》`는 1872년부터 1949년까지 발행된 중국 근현대사의 대표적 일간지이며, 정치사·사회사·문화사·경제사 연구 전반에서 중요한 사료로 활용된다. 이 저장소는 상하이도서관 `《申報》` 데이터베이스에서 특정 검색어 또는 특정 기간에 해당하는 기사 텍스트를 수집하고, 이를 하나의 연구용 기사 단위 데이터셋으로 전처리하는 전체 절차를 재현할 수 있도록 설계되었다.
-
-## 기준 스크립트
-현재 워크플로우의 주 스크립트는 아래 두 개다.
-
-1. `collect_shenbao_textdata_chrome_ver3_1.py`
-- 최신 수집 스크립트
-- Google Chrome을 직접 열고, 로그인 완료 후 결과 목록 프레임을 탐지해 수집한다.
-- 수집 결과는 16열 CSV로 저장된다.
-
-2. `shenbao_textdata_preprocess_combine_ver2.py`
-- 최신 전처리·통합 스크립트
-- 여러 원본 수집 CSV를 병합하고, `article_id` 기준 대표 기사 행을 고른 뒤, 분석용 텍스트 `analysis_text`를 생성한다.
-
-이전 버전 스크립트와 보조 스크립트는 참고용이다.
-
-- 이전 버전 수집 스크립트: `collect_shenbao_textdata_chrome_ver2.py`, `collect_shenbao_textdata_chrome_ver3.py`: 
-- 이전 버전 전처리 스크립트: `shenbao_textdata_preprocess_combine.py`
-- 예외 행 식별 실험을 위한 보조 스크립트: `shenbao_textdata_exceptions.py`
-
-## 실행 환경
-- 운영체제: Windows 로컬 환경
-- 편집 도구: Visual Studio Code 1.115.0
-- 구현 언어: Python 3.11.9
-- 실행 및 검증: PowerShell
-- 브라우저 자동화: Playwright for Python 1.58.0
-- 브라우저: Google Chrome
 
 ## 저장소 구성
 ```text
@@ -85,6 +59,32 @@ shlib-shenbao-dataset-workflow/
       ├─ (sample)shenbao_textdata_stage2_deduplicated_articles_constitutional.csv
       └─ (sample)shenbao_textdata_stage3_preprocessed_articles_constitutional.csv
 ```
+
+## 기준 스크립트
+현재 워크플로우의 주 스크립트는 아래 두 개다.
+
+1. `collect_shenbao_textdata_chrome_ver3_1.py`
+- 최신 수집 스크립트
+- Google Chrome을 직접 열고, 로그인 완료 후 결과 목록 프레임을 탐지해 수집한다.
+- 수집 결과는 16열 CSV로 저장된다.
+
+2. `shenbao_textdata_preprocess_combine_ver2.py`
+- 최신 전처리·통합 스크립트
+- 여러 원본 수집 CSV를 병합하고, `article_id` 기준 대표 기사 행을 고른 뒤, 분석용 텍스트 `analysis_text`를 생성한다.
+
+이전 버전 스크립트와 보조 스크립트는 참고용이다.
+
+- 이전 버전 수집 스크립트: `collect_shenbao_textdata_chrome_ver2.py`, `collect_shenbao_textdata_chrome_ver3.py`: 
+- 이전 버전 전처리 스크립트: `shenbao_textdata_preprocess_combine.py`
+- 예외 행 식별 실험을 위한 보조 스크립트: `shenbao_textdata_exceptions.py`
+
+## 실행 환경
+- 운영체제: Windows 로컬 환경
+- 편집 도구: Visual Studio Code 1.115.0
+- 구현 언어: Python 3.11.9
+- 실행 및 검증: PowerShell
+- 브라우저 자동화: Playwright for Python 1.58.0
+- 브라우저: Google Chrome
 
 ## 수집 스크립트 개요
 #### `collect_shenbao_textdata_chrome_ver3_1.py`
@@ -214,7 +214,7 @@ theme
 collect_error
 ```
 
-설명:
+Stage 1의 처리 내용은 다음과 같다.
 
 - Stage 1은 여러 원본 CSV를 행 단위로 이어 붙인다.
 - 원본 수집 CSV의 `content-box2` 열은 Stage 1부터 `content_box2`로 정규화된다.
@@ -329,13 +329,13 @@ Stage 3의 처리 내용은 아래와 같다.
 
 | 구분 | 파일명 | 데이터 성격 | 행 수 | 열 수 | 시기 범위 |
 | --- | --- | --- | ---: | ---: | --- |
-| 원 수집 데이터 | `shenbao_textdata_zhixian_1to4322.csv` | 검색어 `制憲` | 4,322 | 16 | 1872-08-20 - 1949-05-26 |
-| 원 수집 데이터 | `shenbao_textdata_xianzheng_1to9906.csv` | 검색어 `憲政` | 9,906 | 16 | 1875-08-31 - 1949-05-23 |
-| 원 수집 데이터 | `shenbao_textdata_xianfa_1to18648.csv` | 검색어 `憲法` | 18,648 | 16 | 1873-09-02 - 1949-05-26 |
-| 원 수집 데이터 | `shenbao_textdata_lixian_1to7203.csv` | 검색어 `立憲` | 7,203 | 16 | 1877-06-06 - 1949-05-08 |
-| 전처리 1단계 | `shenbao_textdata_stage1_appended_rows_constitutional.csv` | 단순 병합 | 40,079 | 17 | 1872-08-20 - 1949-05-26 |
-| 전처리 2단계 | `shenbao_textdata_stage2_deduplicated_articles_constitutional.csv` | 중복 제거 | 33,513 | 22 | 1872-08-20 - 1949-05-26 |
-| 전처리 3단계 | `shenbao_textdata_stage3_preprocessed_articles_constitutional.csv` | 분석용 데이터 | 33,513 | 26 | 1872-08-20 - 1949-05-26 |
+| 원 수집 데이터 | shenbao_textdata_zhixian_1to4322.csv | 검색어 `制憲` | 4,322 | 16 | 1872-08-20 - 1949-05-26 |
+| 원 수집 데이터 | shenbao_textdata_xianzheng_1to9906.csv | 검색어 `憲政` | 9,906 | 16 | 1875-08-31 - 1949-05-23 |
+| 원 수집 데이터 | shenbao_textdata_xianfa_1to18648.csv | 검색어 `憲法` | 18,648 | 16 | 1873-09-02 - 1949-05-26 |
+| 원 수집 데이터 | shenbao_textdata_lixian_1to7203.csv | 검색어 `立憲` | 7,203 | 16 | 1877-06-06 - 1949-05-08 |
+| 전처리 1단계 | shenbao_textdata_stage1_appended_rows_constitutional.csv | 단순 병합 | 40,079 | 17 | 1872-08-20 - 1949-05-26 |
+| 전처리 2단계 | shenbao_textdata_stage2_deduplicated_articles_constitutional.csv | 중복 제거 | 33,513 | 22 | 1872-08-20 - 1949-05-26 |
+| 전처리 3단계 | shenbao_textdata_stage3_preprocessed_articles_constitutional.csv | 분석용 데이터 | 33,513 | 26 | 1872-08-20 - 1949-05-26 |
 
 ※ 저장소는 수집 및 전처리 데이터 전체가 아닌  `(sample)` 접두부가 붙은 샘플 데이터만을 제공한다.
 
