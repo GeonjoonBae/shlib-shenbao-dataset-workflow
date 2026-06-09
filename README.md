@@ -2,6 +2,7 @@
 ## Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collection and Preprocessing
 
 <details> <summary><h3>데이터 인용 예시</h3></summary>
+   
 - Bae, Geonjoon. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow
 
 - Bae, G., 2026. “Text Data from the Shanghai Library *Shun Pao* Database and the Workflow for Collecting and Preprocessing.” GitHub repository. Available at: https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow [Accessed XX April 20XX(방문 일자)].
@@ -11,6 +12,47 @@
 - 배건준, 「상하이도서관 《申報》 텍스트 데이터와 그 수집-전처리 절차」, GitHub 저장소, https://github.com/GeonjoonBae/shlib-shenbao-dataset-workflow (검색일 기입)
 
 </details>
+<details> <summary><h3>논문 정보</h3></summary>
+   
+### 논문 제목 
+#### 중국 상하이도서관 《申報》 텍스트 데이터와 그 수집 및 전처리 절차  
+#### Text data from the Shanghai Library <i>Shun Pao</i> database and the workflow for collecting and preprocessing
+</br>
+
+### 논문 서지사항 및 링크
+디지털인문학(Korean Journal of Digital Humanities) 제3권 제1호, 2026.05, 85-112쪽  
+doi: <https://doi.org/10.23287/KJDH.2026.3.1.4>  
+</br>
+
+### 논문 목차
+
+1. 서론</br>
+2. 데이터 수집</br>
+  2.1 수집 스크립트</br>
+  2.2 수집 결과 데이터</br>
+3. 전처리 - 연구용 통합 데이터 제작</br>
+4. 결론
+</br>
+
+### 논문 개요
+
+#### \<Abstract\>
+
+
+This paper presents a workflow for collecting and preprocessing text data from the Shanghai Library <i>Shun Pao</i> database. It describes the development of a text-data collection script, the actual collection procedure, the structure and characteristics of the collected data, and the preprocessing procedure and output structure used to construct an integrated research dataset. The scripts were designed and developed with the assistance of an AI coding agent in a Human-in-the-Loop workflow, in which the researcher provided requirements, error messages, and related inputs, while the AI agent iteratively revised and verified the code. The prompts, code, and sample data associated with this work are made available in the study’s GitHub repository.
+ 
+Keywords : Shun Pao, Shanghai Library, text data, Digital History, Human-in-the-Loop
+</br>
+
+#### \<국문초록\>
+
+이 논문은 중국 상하이도서관(上海圖書館) 《신보》 데이터베이스 텍스트 데이터 수집 스크립트의 작성 과정과 실제 수집 절차, 수집 데이터의 구조와 특징, 그리고 연구용 통합 데이터 구축을 위한 전처리 스크립트의 처리 절차와 결과물 구조를 설명한다. 스크립트의 설계와 작성 과정 전반에 AI 코딩 에이전트를 활용하여, 사용자가 요구 사항, 오류 메시지 등을 제시하면 이에 따라 AI가 수정과 검증을 반복하는 Human-in-the-Loop 방식으로 작업을 진행하였다. 작업 관련 프롬프트와 코드, 데이터 샘플은 이 연구 GitHub 저장소에 공개한다.
+
+주제어: 《신보》, 상하이도서관, 텍스트 데이터, 디지털 역사학, Human-in-the-Loop
+
+</details>
+
+</br>
 
 ## README 목차
 - [저장소 개요](#저장소-개요)
