@@ -231,13 +231,3 @@ shenbao\shenbao_textdata\preprocess\shenbao_textdata_stage3_preprocessed_article
 원하면 다음 단계로
 1. 이 결과를 논문/메모용 서술 문단으로 압축하거나
 2. 연도별 건수를 표 형태로 정리해드리겠습니다.
-
-
-# 작업 메모
-- 
-
-# 연결 문서 및 연결 이유
-## 내부 연결
-- 
-## 외부 연결
-- 
